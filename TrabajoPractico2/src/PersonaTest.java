@@ -1,3 +1,4 @@
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 
 import org.junit.jupiter.api.Test;
@@ -67,5 +68,14 @@ class PersonaTest {
 		assertThrows(IllegalArgumentException.class, () -> {
             Persona p = new Persona("Test", 3, 2, 5, 15);
         });
+	}
+	
+	@Test
+	public void getInteresesTest() 
+	{
+            Persona p = new Persona("Test", 1, 2, 3, 4);
+            int[] intereses = {1,2,3,4};
+            
+            Assert.intereses(intereses,p.getIntereses());
 	}
 }

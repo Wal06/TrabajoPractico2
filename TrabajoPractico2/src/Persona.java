@@ -55,6 +55,13 @@ public class Persona {
 		this.ci = ci;
 	}
 	
+	public int[] getIntereses()
+	{
+		int[] ret = {di,mi,ei,ci};
+		return ret;
+	}
+	
+	
 	private void validarIntereses(int di,int mi,int ei,int ci)
 	{
 		if(di<1||mi<1||ei<1||ci<1)
