@@ -16,6 +16,7 @@ public class grafoCompleto {
 	{
 		vecinos = new ArrayList<HashSet<Integer>>();
 		personas = new HashMap<>();
+		aristas = new ArrayList<Arista>();
 		personaId=0;
 	}
 	
@@ -35,20 +36,21 @@ public class grafoCompleto {
         	personas.put(personaId, persona);
         	personaId++;
         	vecinos.add(new HashSet<Integer>());
-        	agregarArista(personaId-1,personaId,personas.get(personaId-1).getIntereses(),persona.getIntereses());
+        	agregarArista(personaId-2,personaId-1,personas.get(personaId-1).getIntereses(),persona.getIntereses());
         }
     }
 	
 	private void agregarArista(int p1, int p2, int[] intereses1, int[] intereses2) 
 	{
-		verificarVertice(p1);
-		verificarVertice(p2);
+		//verificarVertice(p1);
+		//verificarVertice(p2);
 		verificarVerticesDistintos(p1, p2);
 		
-		Arista a = new Arista(p1,p2,intereses1,intereses2);
-		aristas.add(a);
 		vecinos.get(p1).add(p2);
 		vecinos.get(p2).add(p1);
+		Arista a = new Arista(p1,p2,intereses1,intereses2);
+		aristas.add(a);
+		
 	}
 
 	
@@ -118,8 +120,6 @@ public class grafoCompleto {
 		}
 	}
 	
-
-
 	
 	boolean distanciaDos(int i, int j)
 	{
