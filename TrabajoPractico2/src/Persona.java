@@ -5,7 +5,9 @@ public class Persona {
 	private String nombre;
 	int di,mi,ei,ci;
 	
-	public Persona(String nombre,int di,int mi,int ei,int ci) {
+	public Persona(String nombre,int di,int mi,int ei,int ci) 
+	{
+		validarIntereses(di,mi,ei,ci);
 		this.nombre=nombre;
 		this.di=di;
 		this.mi=mi;
@@ -51,6 +53,18 @@ public class Persona {
 
 	public void setCi(int ci) {
 		this.ci = ci;
+	}
+	
+	private void validarIntereses(int di,int mi,int ei,int ci)
+	{
+		if(di<1||mi<1||ei<1||ci<1)
+		{
+			throw new IllegalArgumentException("No se admiten numeros negativos");
+		}
+		if(di>5||mi>5||ei>5||ci>5)
+		{
+			throw new IllegalArgumentException("No se admiten numeros mayores a 5");
+		}
 	}
 
 }

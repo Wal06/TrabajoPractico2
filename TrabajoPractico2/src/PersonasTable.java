@@ -42,7 +42,7 @@ public class PersonasTable extends JPanel {
 		
 	}
 	private void initUI() {
-		setDefaultCloseOperation(EXIT_ON_CLOSET);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
 		getRootPane().setLayout(new BorderLayout(5,5));
 		
@@ -53,6 +53,11 @@ public class PersonasTable extends JPanel {
 		getRootPane().add(tableScrollPane,BorderLayout.CENTER);
 		
 	
+		
+	}
+
+	private void setDefaultCloseOperation(Object eXIT_ON_CLOSE2) {
+		// TODO Auto-generated method stub
 		
 	}
 
