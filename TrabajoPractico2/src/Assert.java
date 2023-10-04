@@ -10,7 +10,13 @@ public class Assert {
 		for (int i=0; i<interesesEsperados.length; i++)
 		{
 			assertTrue(interesesRecibidos[i]==interesesEsperados[i]);
-		}
-		
+		}	
+	}
+
+	public static void agregarPersonas(grafoCompleto g, int personaId, int tamano, int aristas)
+	{
+		assertEquals(g.personaId, personaId);
+		assertEquals(g.tamano(), tamano);
+		assertEquals(g.aristas.size(), aristas);
 	}
 }

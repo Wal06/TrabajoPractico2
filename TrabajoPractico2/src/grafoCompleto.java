@@ -6,10 +6,10 @@ import java.util.Set;
 
 public class grafoCompleto {
 	
-	private ArrayList<HashSet<Integer>> vecinos;
-	private HashMap<Integer,Persona> personas;
-	private ArrayList<Arista> aristas;
-	private static int personaId;
+	ArrayList<HashSet<Integer>> vecinos;
+	HashMap<Integer,Persona> personas;
+	ArrayList<Arista> aristas;
+	static int personaId;
 	
 	
 	public grafoCompleto() 
@@ -26,7 +26,7 @@ public class grafoCompleto {
         
         if(personaId==0)
         {
-        	personas.put(personaId, persona);
+        	personas.put(personaId, persona); 
         	personaId++;
         	vecinos.add(new HashSet<Integer>());
         }
@@ -34,27 +34,35 @@ public class grafoCompleto {
         else
         {   
         	personas.put(personaId, persona);
-        	personaId++;
         	vecinos.add(new HashSet<Integer>());
-        	agregarArista(personaId-2,personaId-1,personas.get(personaId-1).getIntereses(),persona.getIntereses());
+        	personaId++;
+        	incluirEnElGrafo(personaId-1,persona.getIntereses());	
         }
     }
 	
+	private void incluirEnElGrafo(int personaId, int[] intereses) 
+	{
+		for(int i=0; i<tamano(); i++)
+		{
+			if(i != personaId && !existeArista(personaId,i))
+			{
+				agregarArista(personaId,i,intereses,personas.get(i).getIntereses());
+			}
+		}
+	}
+
 	private void agregarArista(int p1, int p2, int[] intereses1, int[] intereses2) 
 	{
-		//verificarVertice(p1);
-		//verificarVertice(p2);
+		verificarVertice(p1);
+		verificarVertice(p2);
 		verificarVerticesDistintos(p1, p2);
 		
 		vecinos.get(p1).add(p2);
 		vecinos.get(p2).add(p1);
 		Arista a = new Arista(p1,p2,intereses1,intereses2);
-		aristas.add(a);
-		
+		aristas.add(a);	
 	}
 
-	
-	
 	public void eliminarArista(int i, int j) 
 	{
 		verificarVertice(i);
