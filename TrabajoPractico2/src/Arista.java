@@ -3,6 +3,9 @@ public class Arista {
 	int peso;
 	int p1, p2;
 	
+	public Arista() {
+		
+	}
 	
 	public Arista(int p1, int p2, int[] intereses1, int[] intereses2) {
 		this.p1=p1;
@@ -31,6 +34,16 @@ public class Arista {
 	public int getPeso()
 	{
 		return peso;
+	}
+	
+	public boolean contains(int i) 
+	{
+		if(p1==i || p2==i)
+		{
+			return true;
+		}
+		
+		return false;
 	}
 }
 

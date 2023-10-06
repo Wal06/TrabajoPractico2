@@ -13,7 +13,7 @@ public class Assert {
 		}	
 	}
 
-	public static void agregarPersonas(grafoCompleto g, int personaId, int tamano, int aristas)
+	public static void agregarPersonas(GrafoCompleto g, int personaId, int tamano, int aristas)
 	{
 		assertEquals(g.personaId, personaId);
 		assertEquals(g.tamano(), tamano);

@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class grafoCompleto {
+public class GrafoCompleto {
 	
 	ArrayList<HashSet<Integer>> vecinos;
 	HashMap<Integer,Persona> personas;
@@ -12,7 +12,7 @@ public class grafoCompleto {
 	static int personaId;
 	
 	
-	public grafoCompleto() 
+	public GrafoCompleto() 
 	{
 		vecinos = new ArrayList<HashSet<Integer>>();
 		personas = new HashMap<>();

@@ -2,12 +2,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-class grafoCompletoTest {
+class GrafoCompletoTest {
 
 	@Test
 	void tamanoTest()
 	{
-		grafoCompleto g = inicializarGrafo();
+		GrafoCompleto g = inicializarGrafo();
 		
 		assertEquals(4,g.tamano());
 	}
@@ -15,7 +15,7 @@ class grafoCompletoTest {
 	@Test
 	void personaIdTest()
 	{
-		grafoCompleto g = inicializarGrafo();
+		GrafoCompleto g = inicializarGrafo();
 		
 		assertEquals(4,g.personaId);
 	}
@@ -23,7 +23,7 @@ class grafoCompletoTest {
 	@Test
 	void vecinosTest()
 	{
-		grafoCompleto g = inicializarGrafo();
+		GrafoCompleto g = inicializarGrafo();
 		
 		assertEquals(6,g.aristas.size());
 	}
@@ -31,7 +31,7 @@ class grafoCompletoTest {
 	@Test
 	void agregarPersonaTest()
 	{
-		grafoCompleto g = inicializarGrafo();
+		GrafoCompleto g = inicializarGrafo();
 		
 		Assert.agregarPersonas(g, 4, 4, 6);
 	}
@@ -39,14 +39,14 @@ class grafoCompletoTest {
 	@Test
 	void incluirEnElGrafoTest()
 	{
-		grafoCompleto g = inicializarGrafo();
+		GrafoCompleto g = inicializarGrafo();
 		
 		assertEquals(3,g.vecinos(0).size());
 	}
 	
-	private grafoCompleto inicializarGrafo() 
+	private GrafoCompleto inicializarGrafo() 
 	{
-		grafoCompleto g = new grafoCompleto();
+		GrafoCompleto g = new GrafoCompleto();
 		g.agregarPersona("a", 1, 2, 3, 4);
 		g.agregarPersona("b", 4, 3, 2, 1);
 		g.agregarPersona("c", 4, 2, 2, 5);
