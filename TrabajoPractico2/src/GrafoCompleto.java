@@ -36,22 +36,23 @@ public class GrafoCompleto {
         	personas.put(personaId, persona);
         	vecinos.add(new HashSet<Integer>());
         	personaId++;
-        	incluirEnElGrafo(personaId-1,persona.getIntereses());	
+        	incluirEnElGrafo(personaId-1,persona);	
         }
     }
 	
-	private void incluirEnElGrafo(int personaId, int[] intereses) 
+	private void incluirEnElGrafo(int personaId, Persona p) 
 	{
 		for(int i=0; i<tamano(); i++)
 		{
 			if(i != personaId && !existeArista(personaId,i))
 			{
-				agregarArista(personaId,i,intereses,personas.get(i).getIntereses());
+				int peso = calcularSimilaridad(p.getIntereses(),personas.get(i).getIntereses());
+				agregarArista(personaId,i,peso);
 			}
 		}
 	}
 
-	private void agregarArista(int p1, int p2, int[] intereses1, int[] intereses2) 
+	private void agregarArista(int p1, int p2, int peso) 
 	{
 		verificarVertice(p1);
 		verificarVertice(p2);
@@ -59,7 +60,7 @@ public class GrafoCompleto {
 		
 		vecinos.get(p1).add(p2);
 		vecinos.get(p2).add(p1);
-		Arista a = new Arista(p1,p2,intereses1,intereses2);
+		Arista a = new Arista(p1,p2,peso);
 		aristas.add(a);	
 	}
 
@@ -165,6 +166,14 @@ public class GrafoCompleto {
 		{
 			return false;
 		}
+	}
+	
+	private int calcularSimilaridad(int[] intereses1, int[] intereses2) 
+	{
+		return Math.abs(intereses1[0]-intereses2[0]) 
+			 + Math.abs(intereses1[1]-intereses2[1]) 
+			 + Math.abs(intereses1[2]-intereses2[2]) 
+			 + Math.abs(intereses1[3]-intereses2[3]);	
 	}
 	
 
