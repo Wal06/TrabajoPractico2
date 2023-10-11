@@ -6,7 +6,7 @@ public class ArbolGeneradorMinimo {
 
 	private GrafoCompleto grafoCompleto;
 	
-	private ArrayList<HashSet<Integer>> vecinos;
+	ArrayList<HashSet<Integer>> vecinos;
 	private ArrayList<Arista> aristas;
 	private ArrayList<Arista> aristasAuxiliares;
 	private ArrayList<Integer> vertices;
@@ -36,15 +36,11 @@ public class ArbolGeneradorMinimo {
 
 	
 	
-	public void prim() {
-		
-		
+	public void prim() 
+	{	
 			vertices.add(0);
 			obtenerAristas(0);
 			generarAristas();
-					
-
-		
 	}
 	
 	private void obtenerAristas(int i)
@@ -145,14 +141,21 @@ public class ArbolGeneradorMinimo {
 		aristasAuxiliares.remove(a);
 	}
 	
-	
+	public void mostrarVecinos()
+	{
+		for(int i: vecinos.get(2)) 
+		{
+			System.out.println(i+" ");
+		}
+		
+	}
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
 		GrafoCompleto g = new GrafoCompleto();
-		g.agregarPersona("a", 1, 2, 3, 4);
-		g.agregarPersona("b", 2, 3, 4, 5);
+		g.agregarPersona("a", 1, 2, 3, 4);              
+		g.agregarPersona("b", 1, 2, 3, 4);
 		g.agregarPersona("c", 3, 4, 5, 1);
 		g.agregarPersona("d", 4, 5, 1, 2);
 		
@@ -160,6 +163,7 @@ public class ArbolGeneradorMinimo {
 		System.out.println(agm.vecinos.get(0).contains(1));
 		System.out.println(agm.vecinos.size());
 		System.out.println(agm.grafoCompleto.tamano());
+		agm.mostrarVecinos();
 	}
 
 	
