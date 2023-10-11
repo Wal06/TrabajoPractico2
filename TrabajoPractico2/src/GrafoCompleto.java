@@ -78,14 +78,14 @@ public class GrafoCompleto {
 			if (comprobarArista(i,j,arista)) 
 		    {
 				aristas.remove(arista); 
-		        break;
+		  
 		    }
 		}
 	}
 		    
 	private boolean comprobarArista(int i,int j, Arista a)
 	{
-		return a.getP1() == i && a.getP2() == j;
+		return (a.getP1() == i && a.getP2() == j) || (a.getP1() == j && a.getP2() == i);
 	}
 	
 	public boolean existeArista(int i, int j) 

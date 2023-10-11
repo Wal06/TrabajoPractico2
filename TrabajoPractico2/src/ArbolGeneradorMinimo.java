@@ -19,9 +19,9 @@ public class ArbolGeneradorMinimo {
 		aristasAuxiliares = new ArrayList<Arista>();
 		vertices = new ArrayList<Integer>();
 		
-		generarVecinos();
-		 	 	
+		generarVecinos(); 	 	
 		prim();
+		eliminarAristaMayor();
 	}
 	
 	private void generarVecinos()
@@ -61,7 +61,7 @@ public class ArbolGeneradorMinimo {
 		return vecinos.get(a.getP1()).contains(a.getP2());
 	 }
 	
-	public void generarAristas()
+	private void generarAristas()
 	{
 		Arista ret = new Arista();
 		int i = 0; 	
@@ -100,7 +100,7 @@ public class ArbolGeneradorMinimo {
 		int vert1 = a.getP1();
 		int vert2 = a.getP2();
 		
-		if(verticesValidos(vert1,vert2) && a.getPeso()<peso)
+		if(verticesValidos(vert1,vert2) && a.getPeso()>peso)
 		{
 			return true;
 		}
@@ -132,6 +132,58 @@ public class ArbolGeneradorMinimo {
 			return ret.getP1();
 		}
 	}
+	
+	private void eliminarAristaMayor()
+	{
+		Arista ret = new Arista();
+		int pesoAux=-1;
+		for(Arista a: aristas)
+		{
+			if(pesoAux==-1)
+			{
+				pesoAux=a.getPeso();
+				ret=a;
+			}
+	
+			else if(verificarAristaMayor(a,pesoAux))
+			{
+				pesoAux=a.getPeso();
+				ret=a;
+			}
+		}
+		eliminarArista(ret);
+	} 
+	
+	private void eliminarArista(Arista a) 
+	{	
+			int vert1 = a.getP1();
+			int vert2 = a.getP2();
+			vecinos.get(vert1).remove(vert2);
+			vecinos.get(vert2).remove(vert1);
+			/*for (Arista arista : aristas) 
+			{
+				if (comprobarArista(vert1,vert2,arista)) 
+			    {
+					aristas.remove(arista); 
+			    }
+			}*/
+	}
+
+	private boolean verificarAristaMayor(Arista a,  int peso)
+	{	
+		
+		if( a.getPeso()>peso)
+		{
+			return true;
+		}
+		return false;
+	}
+	
+	private boolean comprobarArista(int i,int j, Arista a)
+	{
+		return (a.getP1() == i && a.getP2() == j) || (a.getP1() == j && a.getP2() == i);
+	}
+	
 	
 	private void agregarArista(Arista a) 
 	{
