@@ -1,3 +1,4 @@
+package grafo;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -8,7 +9,7 @@ public class GrafoCompleto {
 	
 	ArrayList<HashSet<Integer>> vecinos;
 	HashMap<Integer,Persona> personas;
-	ArrayList<Arista> aristas;
+	public ArrayList<Arista> aristas;
 	static int personaId;
 	
 	
@@ -35,8 +36,8 @@ public class GrafoCompleto {
         {   
         	personas.put(personaId, persona);
         	vecinos.add(new HashSet<Integer>());
+        	incluirEnElGrafo(personaId,persona);	
         	personaId++;
-        	incluirEnElGrafo(personaId-1,persona);	
         }
     }
 	
@@ -63,31 +64,7 @@ public class GrafoCompleto {
 		Arista a = new Arista(p1,p2,peso);
 		aristas.add(a);	
 	}
-
-	public void eliminarArista(int i, int j) 
-	{
-		verificarVertice(i);
-		verificarVertice(j);
-		verificarVerticesDistintos(i, j);
-		
-		vecinos.get(i).remove(j);
-		vecinos.get(j).remove(i);
-		
-		for (Arista arista : aristas) 
-		{
-			if (comprobarArista(i,j,arista)) 
-		    {
-				aristas.remove(arista); 
-		  
-		    }
-		}
-	}
 		    
-	private boolean comprobarArista(int i,int j, Arista a)
-	{
-		return (a.getP1() == i && a.getP2() == j) || (a.getP1() == j && a.getP2() == i);
-	}
-	
 	public boolean existeArista(int i, int j) 
 	{
 		verificarVertice(i);
@@ -103,21 +80,23 @@ public class GrafoCompleto {
 	}
 	
 	
-	public Set<Integer> vecinos(int i)
+	public Set<Integer> getVecinos(int i)
 	{
 		verificarVertice(i);
 		return vecinos.get(i);
 	}
 	
 	
-	private void verificarVerticesDistintos(int i, int j) {
+	private void verificarVerticesDistintos(int i, int j) 
+	{
 		if(i==j) 
 		{
 			throw new IllegalArgumentException("No se permiten loops: (" + i + " , " +  j + ")");
 		}
 	}
 
-	private void verificarVertice(int i) {
+	private void verificarVertice(int i) 
+	{
 		if(i<0) 
 		{
 			throw new IllegalArgumentException("El vertice no puede ser negativo: " + i);
@@ -130,45 +109,7 @@ public class GrafoCompleto {
 	}
 	
 	
-	boolean distanciaDos(int i, int j)
-	{
-		verificarVertice(i);
-		verificarVertice(j);
-		verificarVerticesDistintos(i, j);
-		
-		if(existeArista(i,j))
-		{
-			return false;
-		}
-		
-		else
-		{
-			Set<Integer> vecinos = vecinos(i);
-			for(int k : vecinos)
-			{
-				if(existeArista(j,k))
-				{
-					return true;
-				}
-			}
-		}
-		
-		return false;
-	}
-	
-	boolean verticeUniversal(int i)
-	{
-		if(vecinos.get(i).size()==tamano()-1)
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
-	
-	private int calcularSimilaridad(int[] intereses1, int[] intereses2) 
+	int calcularSimilaridad(int[] intereses1, int[] intereses2) 
 	{
 		return Math.abs(intereses1[0]-intereses2[0]) 
 			 + Math.abs(intereses1[1]-intereses2[1]) 
@@ -176,10 +117,47 @@ public class GrafoCompleto {
 			 + Math.abs(intereses1[3]-intereses2[3]);	
 	}
 	
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+	@Override
+	public String toString()
+	{
+		StringBuilder str = new StringBuilder();
+		
+		str.append("Cantidad de personas: " + tamano() + "\n\n");
+		
+	    for (Map.Entry<Integer, Persona> entry : personas.entrySet()) 
+	    {
+	        int personaId = entry.getKey();
+	        Persona persona = entry.getValue();
+	        str.append("Persona ").append(personaId).append("\n\n").append(persona).append("\n");
+	        str.append("Vecinos: ").append(vecinos.get(personaId)).append("\n").append("\n");
+	  
+	    }
+	    
+	    str.append("Aristas: \n\n");
+	    
+	    for(Arista a : aristas)
+	    {
+	    	str.append(a);
+	    }
+	    
+	    return str.toString();
 	}
+	
+
+    public static void main(String[] args) 
+    {
+        // Crear un grafo
+        GrafoCompleto grafo = new GrafoCompleto();
+
+        // Agregar personas al grafo
+        grafo.agregarPersona("a", 1, 2, 3, 4);
+        grafo.agregarPersona("b", 4, 3, 2, 1);
+        grafo.agregarPersona("c", 4, 2, 2, 5);
+        grafo.agregarPersona("d", 4, 2, 2, 5);
+
+        // Mostrar información del grafo utilizando el método toString
+        System.out.println(grafo);
+    }
+	
 
 }

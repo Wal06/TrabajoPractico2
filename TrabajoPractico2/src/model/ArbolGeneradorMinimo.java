@@ -1,6 +1,9 @@
+package model;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
+
+import grafo.Arista;
+import grafo.GrafoCompleto;
 
 public class ArbolGeneradorMinimo {
 

@@ -1,3 +1,4 @@
+package grafo;
 import static org.junit.Assert.*;
 
 import java.util.Set;
@@ -19,4 +20,14 @@ public class Assert {
 		assertEquals(g.tamano(), tamano);
 		assertEquals(g.aristas.size(), aristas);
 	}
+	
+	public static void esGrafoCompleto(GrafoCompleto g)
+	{
+		assertEquals(g.getVecinos(0).size(),3);
+		assertEquals(g.getVecinos(1).size(),3);
+		assertEquals(g.getVecinos(2).size(),3);
+		assertEquals(g.getVecinos(3).size(),3);
+	}
+	
+	
 }
