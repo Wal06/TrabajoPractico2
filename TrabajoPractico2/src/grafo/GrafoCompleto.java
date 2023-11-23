@@ -25,7 +25,7 @@ public class GrafoCompleto {
 	{
         Persona persona = new Persona(nombre, deportes, musica, espectaculo, ciencia);
         
-        if(personaId==0)
+        if(personaId==0) //Vemos si es la primer persona en agregarse
         {
         	personas.put(personaId, persona); 
         	personaId++;
@@ -36,7 +36,7 @@ public class GrafoCompleto {
         {   
         	personas.put(personaId, persona);
         	vecinos.add(new HashSet<Integer>());
-        	incluirEnElGrafo(personaId,persona);	
+        	incluirEnElGrafo(personaId,persona);	//Si hay mas de una persona se generan aristas con todo el resto de las personas
         	personaId++;
         }
     }
@@ -86,6 +86,12 @@ public class GrafoCompleto {
 		return vecinos.get(i);
 	}
 	
+	public HashMap<Integer,Persona> getPersonas()
+	{
+		HashMap<Integer,Persona> ret = this.personas;
+		
+		return ret;
+	}
 	
 	private void verificarVerticesDistintos(int i, int j) 
 	{
@@ -104,7 +110,7 @@ public class GrafoCompleto {
 		
 		if(i>=tamano()) 
 		{
-			throw new IllegalArgumentException("Los vertices deben estar contenidos dentro de A: " + i);
+			throw new IllegalArgumentException("Los vertices deben estar contenidos dentro de A: " + tamano());
 		}
 	}
 	
@@ -142,22 +148,5 @@ public class GrafoCompleto {
 	    
 	    return str.toString();
 	}
-	
-
-    public static void main(String[] args) 
-    {
-        // Crear un grafo
-        GrafoCompleto grafo = new GrafoCompleto();
-
-        // Agregar personas al grafo
-        grafo.agregarPersona("a", 1, 2, 3, 4);
-        grafo.agregarPersona("b", 4, 3, 2, 1);
-        grafo.agregarPersona("c", 4, 2, 2, 5);
-        grafo.agregarPersona("d", 4, 2, 2, 5);
-
-        // Mostrar información del grafo utilizando el método toString
-        System.out.println(grafo);
-    }
-	
 
 }

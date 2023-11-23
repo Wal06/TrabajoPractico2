@@ -1,226 +1,118 @@
 package model;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map.Entry;
 
 import grafo.Arista;
-import grafo.GrafoCompleto;
+import grafo.Persona;
 
 public class ArbolGeneradorMinimo {
 
-	private GrafoCompleto grafoCompleto;
+	ArrayList<HashSet<Integer>> vecinos = new ArrayList<HashSet<Integer>>();
+	HashMap<Integer,Persona> personas;
+	public ArrayList<Arista> aristas;
+	static int personaId;
 	
-	ArrayList<HashSet<Integer>> vecinos;
-	private ArrayList<Arista> aristas;
-	private ArrayList<Arista> aristasAuxiliares;
-	private ArrayList<Integer> vertices;
-	 
-	
-	ArbolGeneradorMinimo(GrafoCompleto g)
+	ArbolGeneradorMinimo(ArrayList<Arista> Et,HashMap<Integer,Persona> p, int cantidadDeVertices)
 	{
-		grafoCompleto=g;
-		aristas = new ArrayList<Arista>();
-		aristasAuxiliares = new ArrayList<Arista>();
-		vertices = new ArrayList<Integer>();
-		
-		generarVecinos(); 	 	
-		prim();
-		eliminarAristaMayor();
+		aristas = Et;	//Guardamos el subconjunto de aristas generado por Prim como las aristas del agm
+		personas = p;	
+		generarVecinos(cantidadDeVertices);
+		completarListaDeVecinos();	//Completamos las listas de vecinos de acuerdo a las aristas del agm
 	}
 	
-	private void generarVecinos()
+	ArbolGeneradorMinimo(ArrayList<Arista> Et,HashMap<Integer,Persona> p) //Constructor para testeo
 	{
-		this.vecinos = new ArrayList<HashSet<Integer>>();
-		for (int i = 0; i<grafoCompleto.tamano(); i++)
+		aristas = Et;
+		personas = p;	
+	}
+
+	void generarVecinos(int cantidadDeVertices)
+	{
+		for (int i = 0; i<cantidadDeVertices; i++)
 		{
 			vecinos.add(new HashSet<Integer>());
 		}
-			return;
-	} 	 	
-
-	
-	
-	public void prim() 
-	{	
-			vertices.add(0);
-			obtenerAristas(0);
-			generarAristas();
-	}
-	
-	private void obtenerAristas(int i)
-	{
-		for(Arista a : grafoCompleto.aristas)
-		{
-			if(a.contains(i) && !existeArista(a))
-			{
-				aristasAuxiliares.add(a);
-			}
-		}
-		
 		return;
-	}
-	
-	private boolean existeArista(Arista a) 
-	{
-		return vecinos.get(a.getP1()).contains(a.getP2());
-	 }
-	
-	private void generarAristas()
-	{
-		Arista ret = new Arista();
-		int i = 0; 	
-		int vertice=0;
-		
-		while(i<grafoCompleto.tamano()-1)
-		{
-			int pesoAux=-1;
-			for(Arista a: aristasAuxiliares)
-			{
-				if(pesoAux==-1)
-				{
-					pesoAux=a.getPeso();
-					ret=a;
-				}
-		
-				else if(verificarArista(a,pesoAux))
-				{
-					pesoAux=a.getPeso();
-					ret=a;
-				}
-			}
-			vertice = proximoVertice(vertice,ret);
-		
-			agregarArista(ret);
-			vertices.add(vertice);
-			obtenerAristas(vertice);
-			i++;
-		} 
-	}
-	
-	
-	
-	private boolean verificarArista(Arista a,  int peso)
-	{	
-		int vert1 = a.getP1();
-		int vert2 = a.getP2();
-		
-		if(verticesValidos(vert1,vert2) && a.getPeso()>peso)
-		{
-			return true;
-		}
-		return false;
-	}
-	
-	private boolean verticesValidos(int i, int j)
-	{
-		if(vertices.contains(i) && !vertices.contains(j))
-		{
-			return true;
-		}
-		if(vertices.contains(j) && !vertices.contains(i))
-		{
-			return true;
-		}
-		return false;
-	}
-
-	private int proximoVertice(int vertice, Arista ret) 
-	{
-		if(ret.getP1()==vertice)
-		{
-			return ret.getP2();
-		}
-		
-		else
-		{
-			return ret.getP1();
-		}
-	}
-	
-	private void eliminarAristaMayor()
-	{
-		Arista ret = new Arista();
-		int pesoAux=-1;
-		for(Arista a: aristas)
-		{
-			if(pesoAux==-1)
-			{
-				pesoAux=a.getPeso();
-				ret=a;
-			}
-	
-			else if(verificarAristaMayor(a,pesoAux))
-			{
-				pesoAux=a.getPeso();
-				ret=a;
-			}
-		}
-		eliminarArista(ret);
 	} 
 	
-	private void eliminarArista(Arista a) 
-	{	
-			int vert1 = a.getP1();
-			int vert2 = a.getP2();
-			vecinos.get(vert1).remove(vert2);
-			vecinos.get(vert2).remove(vert1);
-			/*for (Arista arista : aristas) 
-			{
-				if (comprobarArista(vert1,vert2,arista)) 
-			    {
-					aristas.remove(arista); 
-			    }
-			}*/
-	}
-
-	private boolean verificarAristaMayor(Arista a,  int peso)
-	{	
-		
-		if( a.getPeso()>peso)
+	void completarListaDeVecinos() 
+	{
+		for(Arista a : aristas)
 		{
-			return true;
+			agregarArista(a);
 		}
-		return false;
 	}
-	
-	private boolean comprobarArista(int i,int j, Arista a)
+
+	void agregarArista(Arista a) 
 	{
-		return (a.getP1() == i && a.getP2() == j) || (a.getP1() == j && a.getP2() == i);
-	}
-	
-	
-	private void agregarArista(Arista a) 
-	{
-		vecinos.get(a.getP1()).add(a.getP2());
-		vecinos.get(a.getP2()).add(a.getP1());
-		aristas.add(a);
-		aristasAuxiliares.remove(a);
-	}
-	
-	public void mostrarVecinos()
-	{
-		for(int i: vecinos.get(2)) 
-		{
-			System.out.println(i+" ");
-		}
+		int p1 = a.getP1();
+		int p2 = a.getP2();
 		
-	}
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
-		GrafoCompleto g = new GrafoCompleto();
-		g.agregarPersona("a", 1, 2, 3, 4);              
-		g.agregarPersona("b", 1, 2, 3, 4);
-		g.agregarPersona("c", 3, 4, 5, 1);
-		g.agregarPersona("d", 4, 5, 1, 2);
-		
-		ArbolGeneradorMinimo agm = new ArbolGeneradorMinimo(g);
-		System.out.println(agm.vecinos.get(0).contains(1));
-		System.out.println(agm.vecinos.size());
-		System.out.println(agm.grafoCompleto.tamano());
-		agm.mostrarVecinos();
-	}
-
+		vecinos.get(p1).add(p2);
+		vecinos.get(p2).add(p1);
+	}	
 	
+	
+	public int tamano()
+	{
+		return vecinos.size();
+	}
+	
+	public ArrayList<Arista> getAristas() 
+	{
+		return aristas;
+	}
+
+	public ArrayList<HashSet<Integer>> getVecinos() 
+	{
+		return vecinos;
+	}
+
+	public HashMap<Integer, Persona> getPersonas() 
+	{
+		return personas;
+	}
+	
+	public String mostrarPersonas() 
+	{
+		 StringBuilder str = new StringBuilder();
+		    
+		    for (Entry<Integer, Persona> entry : personas.entrySet()) 
+		    {
+		        int personaId = entry.getKey();
+		        Persona persona = entry.getValue();
+		        str.append("Persona ").append(personaId).append("\n").append(persona).append("\n");
+		    }
+		    
+		    return str.toString();	
+	}
+	
+	public String mostrarAristas() 
+	{
+		 StringBuilder str = new StringBuilder();
+		    
+		    for (Arista  entry : aristas) 
+		    {
+		       
+		        str.append(entry);
+		    }
+		    
+		    return str.toString();	
+	}
+
+
+	@Override
+	public String toString()
+	{
+		 StringBuilder str = new StringBuilder();
+		 
+		 str.append(mostrarPersonas());
+		 str.append(mostrarAristas());
+		 
+		 return str.toString();
+	}
 	
 }

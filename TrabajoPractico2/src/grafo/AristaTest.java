@@ -49,4 +49,26 @@ public class AristaTest {
 		
 		assertFalse(a.equals(b));
 	}
+	
+	@Test
+	public void mismosVerticesTest()
+	{
+		Arista a = new Arista(1,2,3);
+		Arista b = new Arista(2,1,4);
+		Arista c = new Arista(1,2,4);
+		
+		assertTrue(a.mismosVertices(b));
+		assertTrue(a.mismosVertices(c));
+	}
+	
+	@Test
+	public void distintosVerticesTest()
+	{
+		Arista a = new Arista(1,2,3);
+		Arista b = new Arista(2,3,4);
+		Arista c = new Arista(1,3,4);
+		
+		assertFalse(a.mismosVertices(b));
+		assertFalse(a.mismosVertices(c));
+	}
 }

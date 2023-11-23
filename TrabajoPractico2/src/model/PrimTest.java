@@ -16,7 +16,7 @@ public class PrimTest {
 	@Before
 	public void crearPrim()
 	{	
-		p = new Prim(crearGrafo());	
+		p = new Prim(crearGrafo(),true);	
 		a = new Arista(0,1,2);
 	}
 	
@@ -29,6 +29,11 @@ public class PrimTest {
 		g.agregarPersona("b", 4, 3, 2, 1);
 		g.agregarPersona("c", 4, 2, 2, 5);
 		g.agregarPersona("d", 4, 2, 2, 5);
+		
+		/*g.agregarPersona("a", 1, 2, 3, 4);
+		g.agregarPersona("b", 1, 2, 3, 4);
+		g.agregarPersona("c", 1, 2, 3, 4);
+		g.agregarPersona("d", 1, 2, 3, 4);*/
 		
 		return g;
 	}
@@ -49,64 +54,29 @@ public class PrimTest {
 		assertEquals(0,p.proximoVertice(v,a));
 	}
 	
-
 	@Test
-	public void primerVerticeMarcadoTest() 
+	public void verificarAristaAgregada()
 	{
-		p.Vt.add(0);
-		assertTrue(p.verticesValidos(0,1));
+		p.Et.add(a);
+		assertFalse(p.verificarArista(a,4));
 	}
 	
-	@Test
-	public void segundoVerticeMarcadoTest() 
-	{
-		p.Vt.add(1);
-		assertTrue(p.verticesValidos(0,1));
-	}
-
-	@Test
-	public void ambosVerticesMarcadosTest() 
-	{
-		p.Vt.add(0);
-		p.Vt.add(1);
-		assertFalse(p.verticesValidos(0,1));
-	}
-	
-	@Test
-	public void ningunVerticesMarcadosTest() 
-	{
-		p.Vt.add(0);
-		p.Vt.add(1);
-		assertFalse(p.verticesValidos(0,1));
-	}
-	
-	@Test
-	public void verificarAristaDeMenorPesoTest()
-	{
-		p.Vt.add(0);
-		p.Vt.add(1);
-		
-		assertFalse(p.verificarArista(a,3));
-	}
-	
-
 	@Test
 	public void verificarAristaDeMayorPesoTest()
 	{
-		p.Vt.add(0);
-		
+		assertFalse(p.verificarArista(a,1));
+	}
+	
+	@Test
+	public void verificarAristaDeMenorSinAgregarPesoTest()
+	{		
 		assertTrue(p.verificarArista(a,5));
 	}
 	
 	@Test
 	public void seleccionarAristaDeMenorPesoTest()
 	{
-		p.aristasAuxiliares.add(a);
-		p.seleccionarAristaDeMenorPeso();
-		Arista b = p.Et.get(0);
-		
-		assertEquals(1,p.Et.size());
-		assertTrue(a.equals(b));
+		PrimAssert.aristaDeMenorPeso(p,a);
 	}
 
 	@Test
@@ -126,16 +96,13 @@ public class PrimTest {
 	@Test
 	public void obtenerAristasTest()
 	{
-		Arista a01 = new Arista(0,1,8);
-		Arista a02 = new Arista(0,2,5);
-		Arista a03 = new Arista(0,3,5);
-		p.obtenerAristas(0);
-		
-		assertEquals(3,p.aristasAuxiliares.size());
-		assertTrue(p.aristasAuxiliares.get(0).equals(a01));
-		assertTrue(p.aristasAuxiliares.get(1).equals(a02));
-		assertTrue(p.aristasAuxiliares.get(2).equals(a03));
+		PrimAssert.obtenerAristas(p);
 	}
 	
+	@Test
+	public void ejecutarPrimTest()
+	{
+		PrimAssert.ejecutarPrim(p);
+	}
 	
 }

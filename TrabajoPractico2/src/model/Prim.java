@@ -12,7 +12,7 @@ public class Prim {
 
 	ArrayList<Integer> Vt = new ArrayList<Integer>();
 	ArrayList<Arista> Et =  new ArrayList<Arista>();
-	ArrayList<Arista> aristasAuxiliares =  new ArrayList<Arista>();
+	ArrayList<Arista> aristasAuxiliares =  new ArrayList<Arista>(); //Guarda las posibles aristas a agregar al AGM de acuerdo a los vertices visitados
 	private int i = 0;
 	private int v = 0;
 	
@@ -20,20 +20,42 @@ public class Prim {
 	Prim(GrafoCompleto g)
 	{
 		grafoCompleto=g;
+		ejecutarPrim();
+	}
+	 
+	Prim(GrafoCompleto g, boolean condicion) 	//Este constructor se usa para simular un Prim para los tests 
+	{
+		grafoCompleto=g;
 	}
 	
 	public void ejecutarPrim()
 	{
-		while(i<grafoCompleto.tamano())
+		if(grafoCompleto.tamano()==1)	//En caso de que solo exista una persona en el grafo
 		{
 			Vt.add(v);
-			obtenerAristas(v);
-			seleccionarAristaDeMenorPeso();
-			
-			int proximoVertice = proximoVertice(v,Et.get(Et.size()-1));
-			v=proximoVertice;
-			
-			i++;
+			return;
+		}	
+		else if(grafoCompleto.tamano()==2) //En caso de que solo exista una arista en el grafo
+		{
+			Vt.add(v);
+			Vt.add(v+1);
+			Et.add(grafoCompleto.aristas.get(0));
+			return;
+		}
+		else 
+		{
+			while(i<grafoCompleto.tamano()-1)	//Cuando hay mas de una arista
+			{
+				Vt.add(v);
+				obtenerAristas(v);				//Obtenemos las aristas que contienen al vertice evaluado
+				seleccionarAristaDeMenorPeso();	
+
+				int proximoVertice = proximoVertice(v,Et.get(Et.size()-1));		//Obtenemos el siguiente vertice en base a la arista agregada
+				v=proximoVertice;
+
+				i++;
+			}
+			Vt.add(v);
 		}
 	}
 	
@@ -41,7 +63,7 @@ public class Prim {
 	{
 		for(Arista a : grafoCompleto.aristas)
 		{
-			if(a.contains(i) && !existeAristaAuxiliar(a))
+			if(a.contains(i) && !existeAristaAuxiliar(a))	
 			{
 				aristasAuxiliares.add(a);
 			}
@@ -53,7 +75,6 @@ public class Prim {
 		return aristasAuxiliares.contains(a);
 	}
 	
-	
 	void seleccionarAristaDeMenorPeso() 
 	{
 		int pesoAux=-1;
@@ -61,7 +82,12 @@ public class Prim {
 		
 		for(Arista a: aristasAuxiliares)
 		{
-			if(pesoAux==-1)
+			if (Vt.contains(a.getP1()) && Vt.contains(a.getP2()))  // Evitamos ciclos pasando a la siguiente arista
+			{
+				continue; 
+			}
+			
+			else if(pesoAux==-1)
 			{
 				pesoAux=a.getPeso();
 				ret=a;
@@ -74,38 +100,34 @@ public class Prim {
 			}
 		}
 		Et.add(ret);
+		aristasAuxiliares.remove(ret);		//Eliminamos aristas que ya no sea relevante considerar
 	}
-	
+
+
 	boolean verificarArista(Arista a,  int peso)
-	{	
-		int vert1 = a.getP1();
-		int vert2 = a.getP2();
-		
-		if(verticesValidos(vert1,vert2) && a.getPeso()<peso)
-		{
-			return true;
-		}
-		
+	{			
+		if( a.getPeso()<=peso && !aristaAgregada(a)) 	//Si a tiene un peso menor o igual al de referencia y 
+		{												//no esta en el conjunto solucion Et, devuelve true
+			return true;								
+		}	
 		return false;
 	}
 	
-	boolean verticesValidos(int i, int j)
+	private boolean aristaAgregada(Arista a) //Comprobamos si la arista esta agregada en el conjunto solucion Et
 	{
-		if(Vt.contains(i) && !Vt.contains(j))
+		boolean ret = false;
+		
+		for(Arista arista : Et)
 		{
-			return true;
+			ret = ret || a.equals(arista);
 		}
-		if(Vt.contains(j) && !Vt.contains(i))
-		{
-			return true;
-		}
-		return false;
+		return ret;
 	}
-	
+
 	int proximoVertice(int vertice, Arista ret) 
 	{
 		if(ret.getP1()==vertice)
-		{
+		{ 
 			return ret.getP2();
 		}
 		
@@ -115,5 +137,12 @@ public class Prim {
 		}
 	}
 	
+	public ArbolGeneradorMinimo generarArbol()
+	{
+        ArrayList<Arista> copiaAristas = new ArrayList<>(Et);
+		ArbolGeneradorMinimo agm = new ArbolGeneradorMinimo(copiaAristas,grafoCompleto.getPersonas(),grafoCompleto.getPersonas().size());
+		return agm;
+	}
+
 }
 

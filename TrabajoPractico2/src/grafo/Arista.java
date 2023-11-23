@@ -13,7 +13,6 @@ public class Arista {
 		this.peso= peso;
 	}
 	
-
 	public int getP1()
 	{
 		return p1;
@@ -58,7 +57,7 @@ public class Arista {
 		return false;
 	}
 
-	private boolean mismosVertices(Arista b) 
+	boolean mismosVertices(Arista b) 
 	{
 		boolean ret1 = p1 == b.getP1() || p1 == b.getP2();
 		boolean ret2 = p2 == b.getP1() || p2 == b.getP2();
